@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI聊天</title>
+</head>
+<body>
+    <h2>我的AI聊天</h2>
+
+    <div id="chatbox" style="height:300px;overflow:auto;border:1px solid #ccc;"></div>
+
+    <input id="input" placeholder="输入消息..." />
+    <button onclick="send()">发送</button>
+
+    <script>
+        async function send() {
+            let input = document.getElementById("input");
+            let message = input.value;
+
+            document.getElementById("chatbox").innerHTML += "<p>你: " + message + "</p>";
+
+            let res = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: message})
+            });
+
+            let data = await res.json();
+
+            document.getElementById("chatbox").innerHTML += "<p>AI: " + data.reply + "</p>";
+
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
